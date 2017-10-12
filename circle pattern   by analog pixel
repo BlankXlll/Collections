@@ -1,0 +1,118 @@
+int csize = 60;
+color [] colors = { color(214,71,0), color(255,241,206), color(23,96,125), color(0,42,74) };
+PImage overlay;
+
+private void ShuffleArray(int[] array)
+{
+    int index, temp;
+
+    for (int i = array.length - 1; i > 0; i--)
+    {
+      index = (int) random(i+1);
+        temp = array[index];
+        array[index] = array[i];
+        array[i] = temp;
+    }
+}
+
+class circ {
+  float x,y,r;
+  float rot;
+  float speed;
+  //ArrayList c;
+  color [] c = { color(214,71,0), color(255,241,206), color(23,96,125), color(0,42,74) };
+
+  circ(float x,float y,float r) {
+    rot = random(360);
+    speed =  ((int) random(1) - 1) * 2;
+    this.x = x;
+    this.y = y;
+    this.r = r;
+
+    ShuffleArray(c);
+
+    /*
+    c = new ArrayList();
+    c.add(color(214,71,0));
+    c.add(color(255,241,206));
+    c.add(color(23,96,125));
+    c.add(color(0,42,74));
+
+    Collections.shuffle(c);
+    */
+
+  }
+
+
+  void draw() {
+    rot = rot + speed;
+    //strokeWeight(1.5);
+    //stroke(30,90);
+    noStroke();
+    //fill(  (color)(Integer) c.get(0) );
+    fill(c[0]);
+    pushMatrix();
+    translate(x,y);
+    ellipse(0,0,r,r);
+    rotate(radians(rot));
+    for (int i=1; i < 3; i++) {
+      fill(i * 60, 0,0);
+      translate(r/(i*4), 0);
+      pushMatrix();
+      rotate(radians( sin(radians(rot)) * 20 *i ));
+      translate( sin(radians(rot)) * 2*i, cos(radians(rot)) * 3*i);
+      //fill( (color)(Integer) c.get(i) );
+      fill(c[i]);
+      //stroke(30);
+      ellipse(0,0,1.1 * (r/(i*2)), 1.1 * (r/(i*2)));
+      popMatrix();
+    }
+    popMatrix();
+  }
+
+}
+
+circ [] c;
+
+void setup() {
+  smooth(8);
+  size(900,900);
+  //size(1920,1200);
+  int w = (int) (width+csize)/csize;
+  int h = (int) (height+csize)/csize;
+  int pad=5;
+  c = new  circ[w*h];
+  int i=0;
+
+  for (int x=0; x< (width+csize); x+=csize) {
+    for (int y=0; y< (height+csize); y+=csize) {
+      c[i] = new circ(x,y,csize-pad);
+      i++;
+    }
+  }
+
+  //overlay = loadImage("metal.jpg");
+  //overlay.resize(width, height);
+
+  background(30);
+}
+
+void draw() {
+  //background(30,20);
+  fill(30, 90);
+  rect(0,0, width, height);
+
+  for (int i=0; i < c.length; i++) {
+    c[i].draw();
+  }
+
+  //blend(overlay, 0,0, width, height, 0,0, width, height,  SCREEN);
+
+
+}
+
+void keyPressed() {
+  if (key == 's') {
+    saveFrame("output###.jpg");
+  }
+}
