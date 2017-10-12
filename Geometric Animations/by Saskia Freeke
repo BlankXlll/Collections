@@ -1,0 +1,29 @@
+translate(width/2, height/2);
+
+  t = (float)frameCount/maxFrameCount;
+  theta = TWO_PI*t;
+
+  for (float x = -dist; x <= dist; x += space ){
+    for (float y = -dist; y <=dist; y += space) {
+
+      float offSet = (x*a)+(y*b);      
+      float sz1 = map(cos(-theta+offSet), 0, 1, space/2, 0);
+      float sz2 = map(cos(-theta+offSet), 0, 1, space/2, 0);
+      noStroke();
+      fill(255,250,170);
+      ln(x, y, sz1, sz2);
+    }
+  } 
+  popMatrix();
+}
+
+void ln(float xPos, float yPos, float s1, float s2) {
+  pushMatrix();
+  translate(xPos, yPos);
+  
+  float pos = space/2;
+    quad(0-pos+s1, 0-pos, 0+pos, 0-pos+s2, 
+         0+pos-s1, 0+pos, 0-pos, 0+pos-s2);
+  
+  popMatrix();
+}
