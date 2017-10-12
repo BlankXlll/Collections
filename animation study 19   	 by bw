@@ -1,0 +1,29 @@
+angleSp = (float)frameCount / 400 * TWO_PI;
+  
+  for (float x = -150; x <= 150; x += 50){
+    for (float y = -150; y <= 150; y += 50) {
+      float offSet = (x+y)*a;
+      float pos1 = map(cos(-angleSp+offSet), -1, 1, 25, -25);
+      float pos2 = map(cos(-angleSp+offSet), -1, 1, -25, 0);
+      shape(x, y, pos1, pos2);
+    }
+  }
+  popMatrix();
+}
+
+
+void shape(float xPos, float yPos, float p1, float p2) {
+  pushMatrix();
+  translate(xPos, yPos);
+  beginShape();
+  vertex(-p1, -p2);
+  vertex(p1, -p2);
+  vertex(p2, -p1);
+  vertex(p2, p1);
+  vertex(p1, p2);
+  vertex(-p1, p2);
+  vertex(-p2, p1);
+  vertex(-p2, -p1);
+  endShape(CLOSE);
+  popMatrix();
+}
